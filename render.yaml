@@ -1,0 +1,39 @@
+services:
+  # Backend Web Service (Django REST Framework)
+  - type: web
+    name: exmint-lms-backend
+    runtime: python
+    rootDir: backend
+    buildCommand: ./build.sh
+    startCommand: gunicorn core.wsgi:application --bind 0.0.0.0:$PORT
+    envVars:
+      - key: DEBUG
+        value: "False"
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ALLOWED_HOSTS
+        value: ".onrender.com,localhost,127.0.0.1"
+      - key: DATABASE_URL
+        placeholder: "postgresql://postgres:[PASSWORD]@db.[PROJECT-REF].supabase.co:5432/postgres"
+      - key: CORS_ALLOW_ALL
+        value: "False"
+      - key: CORS_ALLOWED_ORIGINS
+        placeholder: "https://your-frontend.vercel.app"
+      - key: GEMINI_API_KEY
+        placeholder: "Google AI Studio API Key"
+      - key: GEMINI_MODEL
+        value: "gemini-2.5-flash"
+      - key: EMAIL_BACKEND
+        value: "django.core.mail.backends.smtp.EmailBackend"
+      - key: EMAIL_HOST
+        value: "smtp.gmail.com"
+      - key: EMAIL_PORT
+        value: "587"
+      - key: EMAIL_USE_TLS
+        value: "True"
+      - key: EMAIL_HOST_USER
+        placeholder: "your-email@gmail.com"
+      - key: EMAIL_HOST_PASSWORD
+        placeholder: "your-app-password"
+      - key: DEFAULT_FROM_EMAIL
+        placeholder: "ExMint <no-reply@your-domain.example>"
